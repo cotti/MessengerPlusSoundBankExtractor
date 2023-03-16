@@ -1,0 +1,71 @@
+<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:vm="using:MessengerPlusSoundBankExtractor.ViewModels"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:m="using:MessengerPlusSoundBankExtractor.Models"
+        mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
+        x:Class="MessengerPlusSoundBankExtractor.Views.MainWindowView"
+        Icon="/Assets/avalonia-logo.ico"
+        xmlns:suki="using:SukiUI.Controls"
+        Title="MessengerPlusSoundBankExtractor"
+        Width="900" Height="450"
+        Name="MainWindow"
+        Classes="NakedWindow">
+
+    <Design.DataContext>
+        <vm:MainWindowViewModel/>
+    </Design.DataContext>
+
+  <suki:DesktopPage Title="MessengerPlusSoundBankExtractor"
+                    LogoKind="MessageAlertOutline"
+                    LogoColor="{StaticResource ThemeAccentBrush}">
+  <Grid ColumnDefinitions="Auto,*" RowDefinitions="Auto,*" Margin="4">
+    <Grid Grid.Row="0" Grid.Column="0" RowDefinitions="Auto, 40, 40, 1*" ColumnDefinitions="120, 260, Auto" Margin="8">
+      <Label Grid.Row="1" Grid.Column="0" Content="Pack File"
+             HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
+      <StackPanel Grid.Row="1" Grid.Column="1" Orientation="Horizontal" Spacing="0">
+        <TextBox Classes="BottomBar" Text="{Binding OriginPath}" Width="220" VerticalContentAlignment="Center"/>
+        <Button Classes="Primary" Command="{Binding SelectOriginPathCommand}">
+          <TextBlock>...</TextBlock>
+        </Button>
+      </StackPanel>
+      <Label Grid.Row="2" Grid.Column="0" Content="Extraction Folder"
+             HorizontalContentAlignment="Right" VerticalContentAlignment="Center"/>
+      <StackPanel Grid.Row="2" Grid.Column="1" Orientation="Horizontal" Spacing="0">
+        <TextBox Classes="BottomBar" Text="{Binding TargetPath}"  Width="220" VerticalContentAlignment="Center"/>
+        <Button Classes="Primary" Command="{Binding SelectTargetPathCommand}">
+          <TextBlock>...</TextBlock>
+        </Button>
+      </StackPanel>
+      <Button Classes="Primary" Grid.Row="1" Grid.RowSpan="2" Grid.Column="2"
+              Height="50" VerticalContentAlignment="Center" Command="{Binding ConvertFileCommand}">
+        <TextBlock>Load</TextBlock>
+      </Button>
+
+    </Grid>
+    <Grid Grid.Row="0" Grid.RowSpan="2" Grid.Column="1">
+      <DataGrid Items="{Binding AudioList}" HeadersVisibility="None" SelectedItem="{Binding SelectedAudioFile}">
+        <DataGrid.Columns>
+          <DataGridTextColumn Binding="{Binding Name}" Width="*"/>
+              <DataGridTemplateColumn>
+                <DataGridTemplateColumn.CellTemplate>
+                  <DataTemplate DataType="m:AudioFile">
+                    <Button Classes="Outlined" Command="{Binding #MainWindow.DataContext.PlayFileCommand}" CommandParameter="{Binding File}" Margin="8,0,8,0" Padding="8,6,8,6">
+                      <TextBlock>Play</TextBlock>
+                    </Button>
+                  </DataTemplate>
+                </DataGridTemplateColumn.CellTemplate>
+              </DataGridTemplateColumn>
+        </DataGrid.Columns>
+      </DataGrid>
+    </Grid>
+    <Grid Grid.Row="1" Grid.Column="0">
+      <Button Classes="Primary" Grid.Row="1" Grid.RowSpan="2" Grid.Column="2"
+              Height="50" VerticalContentAlignment="Center" Command="{Binding SaveFilesCommand}">
+        <TextBlock>Extract</TextBlock>
+      </Button>
+    </Grid>
+  </Grid>
+  </suki:DesktopPage>
+</Window>
