@@ -1,5 +1,8 @@
 # **MessengerPlusSoundBankExtractor**
 ---
+![image](https://user-images.githubusercontent.com/889227/225746157-18848bb9-83b7-4718-a9d7-5ec578a07041.png)
+
+
 #### _A MSN Messenger Plus sound packs extractor (.plp)_
 [![.NET Core Desktop](https://github.com/cotti/MessengerPlusSoundBankExtractor/actions/workflows/dotnet-desktop.yml/badge.svg)](https://github.com/cotti/MessengerPlusSoundBankExtractor/actions/workflows/dotnet-desktop.yml)
 ---
