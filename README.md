@@ -1,7 +1,7 @@
 # **MessengerPlusSoundBankExtractor**
 ---
 #### _A MSN Messenger Plus sound packs extractor (.plp)_
-
+[![.NET Core Desktop](https://github.com/cotti/MessengerPlusSoundBankExtractor/actions/workflows/dotnet-desktop.yml/badge.svg)](https://github.com/cotti/MessengerPlusSoundBankExtractor/actions/workflows/dotnet-desktop.yml)
 ---
 
 ### *How does this run?*
