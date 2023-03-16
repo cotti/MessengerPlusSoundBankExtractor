@@ -72,12 +72,12 @@ namespace MessengerPlusSoundBankExtractor.Services
             {
                 Debug.WriteLine(ex.ToString());
             }
-            pcmData = pcmStream.ToArray();
+            pcmData = ToMono(pcmStream.ToArray());
             buffer = null;
 
             int bufferId = AL.GenBuffer();
 
-            AL.BufferData<byte>(bufferId, AudioContext.GetSoundFormat(SoundFormat.Pcm16BitMono), new ReadOnlySpan<byte>(pcmData), mp3Stream.Frequency * 2);
+            AL.BufferData<byte>(bufferId, AudioContext.GetSoundFormat(SoundFormat.Pcm16BitMono), new ReadOnlySpan<byte>(pcmData), mp3Stream.Frequency);
 
             int sourceId = AL.GenSource();
             AL.Source(sourceId, ALSourcei.Buffer, bufferId);
@@ -100,6 +100,24 @@ namespace MessengerPlusSoundBankExtractor.Services
                 }
                 disposedValue = true;
             }
+        }
+
+        private byte[] ToMono(byte[] data)
+        {
+            byte[] newData = new byte[data.Length / 2];
+
+            for (int i = 0; i < data.Length / 4; ++i)
+            {
+                int HI = 1; int LO = 0;
+                short left = (short)((data[i * 4 + HI] << 8) | (data[i * 4 + LO] & 0xff));
+                short right = (short)((data[i * 4 + 2 + HI] << 8) | (data[i * 4 + 2 + LO] & 0xff));
+                int avg = (left + right) / 2;
+
+                newData[i * 2 + HI] = (byte)((avg >> 8) & 0xff);
+                newData[i * 2 + LO] = (byte)((avg & 0xff));
+            }
+
+            return newData;
         }
 
         public void Dispose()
