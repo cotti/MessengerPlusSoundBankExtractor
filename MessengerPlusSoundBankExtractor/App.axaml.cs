@@ -20,7 +20,7 @@ namespace MessengerPlusSoundBankExtractor
             {
                 desktop.MainWindow = new MainWindowView
                 {
-                    DataContext = Container.GetRequiredService<MainWindowViewModel>()
+                    DataContext = Container!.GetRequiredService<MainWindowViewModel>()
                 };
             }
 

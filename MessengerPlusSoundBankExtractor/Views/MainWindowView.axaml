@@ -4,6 +4,7 @@
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:m="using:MessengerPlusSoundBankExtractor.Models"
+        xmlns:c="using:MessengerPlusSoundBankExtractor.Controls"
         mc:Ignorable="d" d:DesignWidth="800" d:DesignHeight="450"
         x:Class="MessengerPlusSoundBankExtractor.Views.MainWindowView"
         Icon="/Assets/avalonia-logo.ico"
@@ -11,6 +12,7 @@
         Title="MessengerPlusSoundBankExtractor"
         Width="900" Height="450"
         Name="MainWindow"
+        CanResize="False"
         Classes="NakedWindow">
 
     <Design.DataContext>
@@ -45,15 +47,19 @@
 
     </Grid>
     <Grid Grid.Row="0" Grid.RowSpan="2" Grid.Column="1">
-      <DataGrid Items="{Binding AudioList}" HeadersVisibility="None" SelectedItem="{Binding SelectedAudioFile}">
+      <DataGrid Items="{Binding AudioList}" HeadersVisibility="None" IsReadOnly="True" AreRowDetailsFrozen="True">
         <DataGrid.Columns>
           <DataGridTextColumn Binding="{Binding Name}" Width="*"/>
               <DataGridTemplateColumn>
                 <DataGridTemplateColumn.CellTemplate>
                   <DataTemplate DataType="m:AudioFile">
-                    <Button Classes="Outlined" Command="{Binding #MainWindow.DataContext.PlayFileCommand}" CommandParameter="{Binding File}" Margin="8,0,8,0" Padding="8,6,8,6">
-                      <TextBlock>Play</TextBlock>
-                    </Button>
+                    <c:AudioPlayer IsEnabled="{Binding !IsPlaying}" 
+                                   IsPlaying="{Binding IsPlaying}" 
+                                   TotalDuration="{Binding TotalDuration}"
+                                   CurrentDuration="{Binding CurrentDuration}" 
+                                   Command="{Binding #MainWindow.DataContext.PlayFileCommand}" 
+                                   CommandParameter="{Binding}" 
+                                   Progress="{Binding Progress}"/>
                   </DataTemplate>
                 </DataGridTemplateColumn.CellTemplate>
               </DataGridTemplateColumn>

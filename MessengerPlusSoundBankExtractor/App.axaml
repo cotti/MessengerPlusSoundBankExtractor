@@ -8,5 +8,7 @@
 
     <Application.Styles>
       <StyleInclude Source="avares://SukiUI/Theme/Index.xaml"/>
+      <StyleInclude Source="avares://MessengerPlusSoundBankExtractor/Controls/AudioPlayer.axaml"/>
+      <StyleInclude Source="avares://MessengerPlusSoundBankExtractor/Styles/AudioPlayer.axaml"/>
     </Application.Styles>
 </Application>

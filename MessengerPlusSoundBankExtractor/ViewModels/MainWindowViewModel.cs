@@ -23,8 +23,6 @@ namespace MessengerPlusSoundBankExtractor.ViewModels
 
         private ReadOnlyMemory<byte> activeFile;
 
-        private AudioFile selectedAudioFile;
-
         public string OriginPath
         {
             get { return _OriginPath; }
@@ -42,9 +40,8 @@ namespace MessengerPlusSoundBankExtractor.ViewModels
         public ReactiveCommand<Unit, Task> SelectOriginPathCommand { get; }
         public ReactiveCommand<Unit, Task> SelectTargetPathCommand { get; }
         public ReactiveCommand<Unit, Task> ConvertFileCommand { get; }
-        public ReactiveCommand<ReadOnlyMemory<byte>, Unit> PlayFileCommand { get; }
+        public ReactiveCommand<AudioFile, Unit> PlayFileCommand { get; }
         public ObservableCollectionExtended<AudioFile> AudioList { get => audioList; set => audioList = value; }
-        public AudioFile SelectedAudioFile { get => selectedAudioFile; set => selectedAudioFile = value; }
         public ReactiveCommand<Unit, Task> SaveFilesCommand { get; }
         
 
@@ -53,11 +50,10 @@ namespace MessengerPlusSoundBankExtractor.ViewModels
             this.WhenAnyValue(o => o.OriginPath).Subscribe(o => this.RaisePropertyChanged(nameof(OriginPath)));
             this.WhenAnyValue(o => o.TargetPath).Subscribe(o => this.RaisePropertyChanged(nameof(TargetPath)));
             this.WhenAnyValue(o => o.AudioList).Subscribe(o => this.RaisePropertyChanged(nameof(AudioList)));
-            this.WhenAnyValue(o => o.SelectedAudioFile).Subscribe(o => this.RaisePropertyChanged(nameof(SelectedAudioFile)));
             SelectOriginPathCommand = ReactiveCommand.Create(SelectOriginPath);
             SelectTargetPathCommand = ReactiveCommand.Create(SelectTargetPath);
             ConvertFileCommand = ReactiveCommand.Create(ConvertFile);
-            PlayFileCommand = ReactiveCommand.CreateFromTask<ReadOnlyMemory<byte>>(Play);
+            PlayFileCommand = ReactiveCommand.Create<AudioFile>(Play);
             SaveFilesCommand = ReactiveCommand.Create(SaveFiles);
             activeFile = null!;
 
@@ -68,9 +64,10 @@ namespace MessengerPlusSoundBankExtractor.ViewModels
             }
         }
 
-        private async Task Play(ReadOnlyMemory<byte> file)
+        private void Play(AudioFile file)
         {
-            await Task.Run(() => player.PlayAudio(file));
+            file.DurationSeconds = 0;
+            Task.Run(() => player.PlayAudio(file));
         }
 
         private async Task ConvertFile()

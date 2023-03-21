@@ -18,7 +18,7 @@ namespace MessengerPlusSoundBankExtractor
 {
     public partial class App : Application
     {
-        public IServiceProvider Container { get; private set; }
+        public IServiceProvider? Container { get; private set; }
 
         public App()
         {

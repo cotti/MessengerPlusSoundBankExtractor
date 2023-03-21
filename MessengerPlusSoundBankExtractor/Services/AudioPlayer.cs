@@ -1,4 +1,5 @@
-﻿using MP3Sharp;
+﻿using MessengerPlusSoundBankExtractor.Models;
+using MP3Sharp;
 using OpenTK.Audio.OpenAL;
 using SkiaSharp;
 using System;
@@ -20,7 +21,7 @@ namespace MessengerPlusSoundBankExtractor.Services
         public AudioContext()
         {
             device = ALC.OpenDevice(null);
-            context = ALC.CreateContext(device, (int[])null);
+            context = ALC.CreateContext(device, (int[])null!);
             ALC.MakeContextCurrent(context);
         }
 
@@ -51,10 +52,10 @@ namespace MessengerPlusSoundBankExtractor.Services
             context = new AudioContext();
         }
 
-        public async Task PlayAudio(ReadOnlyMemory<byte> file)
+        public async Task PlayAudio(AudioFile file)
         {
-            byte[] pcmData = null;
-            using var mp3Stream = new MP3Stream(new MemoryStream(file.ToArray()));
+            byte[] pcmData = null!;
+            using var mp3Stream = new MP3Stream(new MemoryStream(file.File.ToArray()));
             using var pcmStream = new MemoryStream();
             var buffer = new byte[4096];
             int bytesReturned = 1;
@@ -77,6 +78,9 @@ namespace MessengerPlusSoundBankExtractor.Services
 
             int bufferId = AL.GenBuffer();
 
+            file.IsPlaying = true;
+            file.TotalSeconds = (double)(pcmData.Length / 2) / mp3Stream.Frequency;
+
             AL.BufferData<byte>(bufferId, AudioContext.GetSoundFormat(SoundFormat.Pcm16BitMono), new ReadOnlySpan<byte>(pcmData), mp3Stream.Frequency);
 
             int sourceId = AL.GenSource();
@@ -84,10 +88,21 @@ namespace MessengerPlusSoundBankExtractor.Services
 
             AL.SourcePlay(sourceId);
 
+
+            while(AL.GetSourceState(sourceId) != ALSourceState.Stopped)
+            {
+                AL.GetSource(sourceId, ALGetSourcei.ByteOffset, out int bytesPlayed);
+                await Task.Run(() => Task.Delay(100));
+                file.DurationSeconds = ((double)(pcmData.Length - (pcmData.Length - bytesPlayed)) / 2) / mp3Stream.Frequency;
+            }
+
             SpinWait.SpinUntil(() => AL.GetSourceState(sourceId) == ALSourceState.Stopped);
 
+            file.IsPlaying = false;
             AL.DeleteSource(sourceId);
             AL.DeleteBuffer(bufferId);
+
+            GC.Collect();
         }
 
         protected virtual void Dispose(bool disposing)

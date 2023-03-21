@@ -12,7 +12,7 @@ namespace MessengerPlusSoundBankExtractor.Services
 {
     public class FileConverter
     {
-        private static byte[] filePattern = { 0x53, 0x4E, 0x44, 0x55, 0x00 };
+        private static readonly byte[] filePattern = { 0x53, 0x4E, 0x44, 0x55, 0x00 };
         public static List<int> FindPattern(ReadOnlySpan<byte> data)
         {
             var result = new List<int>();
@@ -55,8 +55,8 @@ namespace MessengerPlusSoundBankExtractor.Services
             var result = new List<AudioFile>();
             /*SNDU [53 4e 44 55] (4 bytes)
             00 00 00 (3 bytes)
-            17 bytes desconhecidos.
-            260 bytes - Reservados para nome*/
+            17 bytes unknown.
+            260 bytes - Reserved for the name*/
             for(int i = 0; i < indexes.Count - 1;)
             {
                 var nextFile = new AudioFile
@@ -67,8 +67,6 @@ namespace MessengerPlusSoundBankExtractor.Services
                 result.Add(nextFile);
                 ++i;
             }
-
-
 
             return result;
         }
