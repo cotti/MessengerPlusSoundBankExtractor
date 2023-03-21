@@ -14,7 +14,9 @@ It just blops the contents in memory and allows you to preview the audios.
 
 ### *How does one run this?*
 
-You require the OpenAL library on Windows. You can get it here (Windows Installer) https://openal.org/downloads/
+The one point of contention would be OpenAL32.dll. I have added it to the release, but in case it doesn't work for your setup, you can get it here (Windows Installer) https://openal.org/downloads/
+
+OpenAL should be a widespread library on GNU/Linux, so just get it before running this.
 
 Now, for actually running... It _should_ be something like
 
