@@ -22,7 +22,9 @@
               <ThicknessTransition Property="Margin" Duration="0:0:0.3" Easing="SineEaseInOut"/>
             </Transitions>
           </Grid.Transitions>
-          <Button Name="PlayButton" Grid.Column="0" IsEnabled="{TemplateBinding IsEnabled}" HorizontalAlignment="Right" Margin="0,0,4,0" Width="50" FontSize="{TemplateBinding FontSize}" Content="Play" CommandParameter="{TemplateBinding CommandParameter}" Command="{TemplateBinding Command}">
+          <Button Classes="Outlined" Name="PlayButton" Grid.Column="0" IsEnabled="{TemplateBinding IsEnabled}" 
+                  HorizontalAlignment="Right" Margin="0,0,4,0" Width="70" 
+                  FontSize="{TemplateBinding FontSize}" Content="▶ Play" CommandParameter="{TemplateBinding CommandParameter}" Command="{TemplateBinding Command}">
           </Button>
           <StackPanel Grid.Column="1" Name="ProgressPanel" Orientation="Vertical">
             <StackPanel.Transitions>
