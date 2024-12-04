@@ -1,3 +1,7 @@
+# Important
+
+## This repository is archived, as this application has been refactored into [Plpext](https://github.com/cotti/plpext). It's now somewhat better!
+
 # **MessengerPlusSoundBankExtractor**
 ---
 ![image](https://user-images.githubusercontent.com/889227/225746157-18848bb9-83b7-4718-a9d7-5ec578a07041.png)
